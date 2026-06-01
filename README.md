@@ -1,0 +1,60 @@
+# Fermentation — Multi-Run Comparison (Demo)
+
+발효 시뮬레이션 결과(여러 "티켓")를 **동시에 선택해 한 차트에 겹쳐 비교**하는 기능의 재구현 데모입니다.
+React · MUI · Chart.js 로 처음부터 새로 작성했으며, 모든 데이터는 **코드로 생성한 합성(가짜) 데이터**입니다.
+
+## ⚠️ Disclaimer
+
+이 레포는 **Pow.Bio 의 실제 코드나 데이터를 포함하지 않습니다.**
+인턴십에서 제가 구현했던 기능(다중 티켓 비교·오버레이 차트)을, 회사 소스코드 없이
+일반적인 UI 패턴과 합성 데이터만으로 **클린룸 방식으로 재구현한 학습/포트폴리오용 데모**입니다.
+
+- 사용된 시계열은 `src/data/mockRuns.js` 에서 수식으로 생성한 더미 곡선입니다.
+- 티켓 이름(`run-alpha` 등)은 실제와 무관한 임의 라벨입니다.
+- 회사의 백엔드 로직, 데이터베이스 스키마, 실험 데이터는 일절 사용하지 않았습니다.
+
+## 배경 (이 데모가 재현하는 것)
+
+2025년 Pow.Bio(미국) 인턴십에서 발효 시뮬레이션 분석 대시보드의 프론트엔드 기능을 담당했습니다.
+기존에는 한 번에 **하나의** 티켓(시뮬레이션 결과)만 그래프로 볼 수 있어 여러 결과를 비교하기 어려웠고,
+이를 **다중 선택 + 오버레이 차트** 구조로 재설계했습니다. 이 데모는 그 핵심 동작만 떼어내 보여줍니다.
+
+재현한 동작:
+
+- `Select ticket(s)` — 여러 티켓 동시 선택 (MUI `Autocomplete` + `Chip` 태그)
+- 선택한 티켓들을 **한 차트에 오버레이**, 티켓별 **색·선 스타일** 구분
+- 범례에 `변수명 (티켓명)` 형태로 표기 — 예: `BiomassG (run-alpha)`
+- 티켓을 추가/제거하면 차트 즉시 갱신
+
+## 실행
+
+```bash
+npm install
+npm run dev        # http://localhost:5173
+```
+
+## 빌드 / 배포
+
+```bash
+npm run build      # dist/ 생성
+npm run preview    # 빌드 결과 미리보기
+```
+
+GitHub Pages 로 배포하려면 `dist/` 를 Pages 로 게시하면 됩니다.
+(`vite.config.js` 의 `base: './'` 설정으로 프로젝트 사이트에서도 자산 경로가 동작합니다.)
+
+## 기술 스택
+
+React 18 · Vite · Material-UI (MUI) · Chart.js / react-chartjs-2
+
+## 구조
+
+```
+src/
+  App.jsx                  # 상태(선택된 티켓) 관리 + 레이아웃
+  theme.js                 # MUI 다크 테마
+  data/mockRuns.js         # 합성 발효 곡선 생성
+  components/
+    TicketSelect.jsx       # 다중 선택 + Chip 태그
+    OverlayChart.jsx       # 오버레이 라인 차트
+```
